@@ -17,10 +17,12 @@ tar xzf ./GeoLite2-City.tar.gz -C .
 VERSION=$(ls | grep 'GeoLite2-Country_' | sed "s|GeoLite2-Country_||g" | tr -d '\n')
 DATE="$(echo $(TZ=UTC-8 date '+%Y--%m--%d%%20%H%%3A%M%%3A%S'))"
 
-mv ./GeoLite2-Country_*/*.mmdb ./
-cp ./GeoLite2-Country.mmdb ./Country.mmdb
-cp ./GeoLite2-ASN.mmdb ./ASN.mmdb
-cp ./GeoLite2-City.mmdb ./City.mmdb
+cp ./GeoLite2-Country_*/GeoLite2-Country.mmdb ./
+cp ./GeoLite2-Country_*/GeoLite2-Country.mmdb ./Country.mmdb
+cp ./GeoLite2-ASN_*/GeoLite2-ASN.mmdb ./
+cp ./GeoLite2-ASN_*/GeoLite2-ASN.mmdb ./ASN.mmdb
+cp ./GeoLite2-City_*/GeoLite2-City.mmdb ./
+cp ./GeoLite2-City_*/GeoLite2-City.mmdb ./City.mmdb
 rm -rf ./GeoLite2-*_*
 echo $VERSION >version
 
