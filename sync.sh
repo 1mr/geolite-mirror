@@ -17,10 +17,11 @@ tar xzf ./GeoLite2-City.tar.gz -C .
 VERSION=$(ls | grep 'GeoLite2-Country_' | sed "s|GeoLite2-Country_||g" | tr -d '\n')
 DATE="$(echo $(TZ=UTC-8 date '+%Y--%m--%d%%20%H%%3A%M%%3A%S'))"
 
-mv ./GeoLite2-Country_*/GeoLite2-Country.mmdb ./Country.mmdb
-mv ./GeoLite2-ASN_*/GeoLite2-ASN.mmdb ./ASN.mmdb
-mv ./GeoLite2-City_*/GeoLite2-City.mmdb ./City.mmdb
-# rm -rf ./GeoLite2-*_*
+mv ./GeoLite2-Country_*/*.mmdb ./
+ln -s ./GeoLite2-Country.mmdb ./Country.mmdb
+ln -s ./GeoLite2-ASN.mmdb ./ASN.mmdb
+ln -s ./GeoLite2-City.mmdb ./City.mmdb
+rm -rf ./GeoLite2-*_*
 echo $VERSION >version
 
 sed -i "s|## Sync Status|## Sync Status\n\n![](https://img.shields.io/badge/Version-$VERSION-2f8bff.svg)\n![](https://img.shields.io/badge/Last%20Sync-$DATE-blue.svg)|g" README.md
