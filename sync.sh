@@ -18,9 +18,9 @@ VERSION=$(ls | grep 'GeoLite2-Country_' | sed "s|GeoLite2-Country_||g" | tr -d '
 DATE="$(echo $(TZ=UTC-8 date '+%Y--%m--%d%%20%H%%3A%M%%3A%S'))"
 
 mv ./GeoLite2-Country_*/*.mmdb ./
-ln -s ./GeoLite2-Country.mmdb ./Country.mmdb
-ln -s ./GeoLite2-ASN.mmdb ./ASN.mmdb
-ln -s ./GeoLite2-City.mmdb ./City.mmdb
+cp ./GeoLite2-Country.mmdb ./Country.mmdb
+cp ./GeoLite2-ASN.mmdb ./ASN.mmdb
+cp ./GeoLite2-City.mmdb ./City.mmdb
 rm -rf ./GeoLite2-*_*
 echo $VERSION >version
 
