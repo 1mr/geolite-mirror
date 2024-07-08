@@ -45,13 +45,14 @@ printf "#\n\n" >download.md
 printf "## Sync Status\n\n" >>download.md
 printf "[![Sync CI](https://github.com/1mr/geolite-mirror/actions/workflows/sync.yml/badge.svg)](https://github.com/1mr/geolite-mirror/actions/workflows/sync.yml)\n\n" >>download.md
 printf "## Download\n\n" >>download.md
-
-for f in $(find . -type f -name "*.mmdb"); do
+files_mmdb=$(find . -type f -name "*.mmdb")
+for f in $files_mmdb; do
   printf "\`\`\`plain\n" >>download.md
   printf "https://geolite2.1mr.me/${f}\n" >>download.md
   printf "\`\`\`\n\n" >>download.md
 done
-for f in $(find . -type f -name "*.zip"); do
+files_zip=$(find . -type f -name "*.zip")
+for f in $files_zip; do
   printf "\`\`\`plain\n" >>download.md
   printf "https://geolite2.1mr.me/${f}\n" >>download.md
   printf "\`\`\`\n\n" >>download.md
