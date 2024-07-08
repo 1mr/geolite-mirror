@@ -2,17 +2,15 @@
 
 set -e
 
-# Sync
 cp ./README.md ./public/README.md
-
 cd ./public
 
-wget -q -O ./GeoLite2-Country.tar.gz "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=${LICENSE_KEY}&suffix=tar.gz"
-wget -q -O ./GeoLite2-ASN.tar.gz "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-ASN&license_key=${LICENSE_KEY}&suffix=tar.gz"
-wget -q -O ./GeoLite2-City.tar.gz "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=${LICENSE_KEY}&suffix=tar.gz"
-tar xzf ./GeoLite2-Country.tar.gz -C .
-tar xzf ./GeoLite2-ASN.tar.gz -C .
-tar xzf ./GeoLite2-City.tar.gz -C .
+for db in GeoLite2-ASN GeoLite2-City GeoLite2-Country; do
+  wget -q --content-disposition --user=${ACCOUNT_ID} --password=${LICENSE_KEY} "https://download.maxmind.com/geoip/databases/${db}/download?suffix=tar.gz"
+  tar xzf "./${db}.tar.gz" -C .
+  wget -q --content-disposition --user=${ACCOUNT_ID} --password=${LICENSE_KEY} "https://download.maxmind.com/geoip/databases/${db}-CSV/download?suffix=zip"
+  unzip "./${db}-CSV.zip" -d .
+done
 
 VERSION=$(ls | grep 'GeoLite2-Country_' | sed "s|GeoLite2-Country_||g" | tr -d '\n')
 DATE="$(echo $(TZ=UTC-8 date '+%Y--%m--%d%%20%H%%3A%M%%3A%S'))"
@@ -23,6 +21,8 @@ cp ./GeoLite2-ASN_*/GeoLite2-ASN.mmdb ./
 cp ./GeoLite2-ASN_*/GeoLite2-ASN.mmdb ./ASN.mmdb
 cp ./GeoLite2-City_*/GeoLite2-City.mmdb ./
 cp ./GeoLite2-City_*/GeoLite2-City.mmdb ./City.mmdb
+cp ./GeoLite2-*_*/*.csv ./
+
 rm -rf ./GeoLite2-*_*
 echo $VERSION >version
 
@@ -41,6 +41,24 @@ git config --global user.name "github-actions[bot]"
 git remote add origin https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/1mr/geolite-mirror.git
 git checkout -b gh-pages
 cp -rf ../public/* ./
+
+# generate download.md
+printf "#\n\n" >download.md
+printf "## Sync Status\n\n" >>download.md
+printf "[![Sync CI](https://github.com/1mr/geolite-mirror/actions/workflows/sync.yml/badge.svg)](https://github.com/1mr/geolite-mirror/actions/workflows/sync.yml)\n\n" >>download.md
+printf "## Download\n\n" >>download.md
+
+for f in ./GeoLite2-*_*/*.mmdb; do
+  printf "\`\`\`plain\n" >>download.md
+  printf "https://geolite2.1mr.me/${f}\n" >>download.md
+  printf "\`\`\`\n\n" >>download.md
+done
+for f in ./GeoLite2-*_*/*.csv; do
+  printf "\`\`\`plain\n" >>download.md
+  printf "https://geolite2.1mr.me/${f}\n" >>download.md
+  printf "\`\`\`\n\n" >>download.md
+done
+
 git add --all .
 DATE="$(echo $(TZ=UTC-8 date '+%Y-%m-%d %H:%M:%S'))"
 git commit -m "Synced success at $DATE - $VERSION"

@@ -11,6 +11,7 @@ on:
 permissions: write-all
 
 env:
+  ACCOUNT_ID: ${{ secrets.GEOLITE_ACCOUNT_ID }}
   LICENSE_KEY: ${{ secrets.GEOLITE_LICENSE_KEY }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   GITHUB_USER: ${{ github.actor }}
@@ -22,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Checkout & Install
-        run: sudo apt-get -qq -y update && sudo apt-get install -y axel --no-install-recommends
+        run: sudo apt-get -qq -y update && sudo apt-get install -y axel unzip --no-install-recommends
 
       - name: Sync
         run: ./sync.sh
