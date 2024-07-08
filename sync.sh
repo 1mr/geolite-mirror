@@ -6,9 +6,9 @@ cp ./README.md ./public/README.md
 cd ./public
 
 for db in GeoLite2-ASN GeoLite2-City GeoLite2-Country; do
-  wget -q -O "./${db}.tar.gz" "https://download.maxmind.com/app/geoip_download?edition_id=${db}&license_key=${LICENSE_KEY}&suffix=tar.gz"
+  wget -O "./${db}.tar.gz" "https://download.maxmind.com/app/geoip_download?edition_id=${db}&license_key=${LICENSE_KEY}&suffix=tar.gz"
   tar xzf "./${db}.tar.gz" -C .
-  wget -q -O "./${db}.tar.gz" "https://download.maxmind.com/app/geoip_download?edition_id=${db}&license_key=${LICENSE_KEY}&suffix=zip"
+  wget -O "./${db}.tar.gz" "https://download.maxmind.com/app/geoip_download?edition_id=${db}-CSV&license_key=${LICENSE_KEY}&suffix=zip"
   unzip "./${db}-CSV.zip" -d .
 done
 
