@@ -5,9 +5,9 @@ set -e
 cp ./README.md ./public/README.md
 cd ./public
 
-wget -q --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-ASN/download?suffix=tar.gz"
+wget --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-ASN/download?suffix=tar.gz"
 tar xzf ./GeoLite2-ASN.tar.gz -C .
-wget -q --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-ASN-CSV/download?suffix=zip"
+wget --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-ASN-CSV/download?suffix=zip"
 unzip ./GeoLite2-ASN-CSV.zip -d .
 wget -q --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-City/download?suffix=tar.gz"
 tar xzf ./GeoLite2-City.tar.gz -C .
