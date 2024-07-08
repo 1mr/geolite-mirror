@@ -5,18 +5,12 @@ set -e
 cp ./README.md ./public/README.md
 cd ./public
 
-wget --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-ASN/download?suffix=tar.gz"
-tar xzf ./GeoLite2-ASN.tar.gz -C .
-wget --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-ASN-CSV/download?suffix=zip"
-unzip ./GeoLite2-ASN-CSV.zip -d .
-wget -q --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-City/download?suffix=tar.gz"
-tar xzf ./GeoLite2-City.tar.gz -C .
-wget -q --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-City-CSV/download?suffix=zip"
-unzip ./GeoLite2-City-CSV.zip -d .
-wget -q --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz"
-tar xzf ./GeoLite2-Country.tar.gz -C .
-wget -q --content-disposition --user="${ACCOUNT_ID}" --password="${LICENSE_KEY}" "https://download.maxmind.com/geoip/databases/GeoLite2-Country-CSV/download?suffix=zip"
-unzip ./GeoLite2-Country-CSV.zip -d .
+for db in GeoLite2-ASN GeoLite2-City GeoLite2-Country; do
+  wget -q -O "./${db}.tar.gz" "https://download.maxmind.com/app/geoip_download?edition_id=${db}&license_key=${LICENSE_KEY}&suffix=tar.gz"
+  tar xzf "./${db}.tar.gz" -C .
+  wget -q -O "./${db}.tar.gz" "https://download.maxmind.com/app/geoip_download?edition_id=${db}&license_key=${LICENSE_KEY}&suffix=zip"
+  unzip "./${db}-CSV.zip" -d .
+done
 
 VERSION=$(ls | grep 'GeoLite2-Country_' | sed "s|GeoLite2-Country_||g" | tr -d '\n')
 DATE="$(echo $(TZ=UTC-8 date '+%Y--%m--%d%%20%H%%3A%M%%3A%S'))"
