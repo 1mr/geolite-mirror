@@ -21,7 +21,6 @@ cp ./GeoLite2-ASN_*/GeoLite2-ASN.mmdb ./ASN.mmdb
 cp ./GeoLite2-City_*/GeoLite2-City.mmdb ./
 cp ./GeoLite2-City_*/GeoLite2-City.mmdb ./City.mmdb
 rm -rf ./GeoLite2-*_*
-rm -rf ./GeoLite2-*.tar.gz
 
 echo $VERSION >version
 
@@ -47,12 +46,12 @@ printf "## Sync Status\n\n" >>download.md
 printf "[![Sync CI](https://github.com/1mr/geolite-mirror/actions/workflows/sync.yml/badge.svg)](https://github.com/1mr/geolite-mirror/actions/workflows/sync.yml)\n\n" >>download.md
 printf "## Download\n\n" >>download.md
 
-for f in ./GeoLite2-*_*/*.mmdb; do
+for f in *.mmdb; do
   printf "\`\`\`plain\n" >>download.md
   printf "https://geolite2.1mr.me/${f}\n" >>download.md
   printf "\`\`\`\n\n" >>download.md
 done
-for f in ./GeoLite2-*_*/*.csv; do
+for f in *-csv.zip; do
   printf "\`\`\`plain\n" >>download.md
   printf "https://geolite2.1mr.me/${f}\n" >>download.md
   printf "\`\`\`\n\n" >>download.md
