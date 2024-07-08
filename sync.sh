@@ -6,10 +6,9 @@ cp ./README.md ./public/README.md
 cd ./public
 
 for db in GeoLite2-ASN GeoLite2-City GeoLite2-Country; do
-  wget -O "./${db}.tar.gz" "https://download.maxmind.com/app/geoip_download?edition_id=${db}&license_key=${LICENSE_KEY}&suffix=tar.gz"
+  wget -q -O "./${db}.tar.gz" "https://download.maxmind.com/app/geoip_download?edition_id=${db}&license_key=${LICENSE_KEY}&suffix=tar.gz"
   tar xzf "./${db}.tar.gz" -C .
-  wget -O "./${db}-CSV.zip" "https://download.maxmind.com/app/geoip_download?edition_id=${db}-CSV&license_key=${LICENSE_KEY}&suffix=zip"
-  unzip "./${db}-CSV.zip" -d .
+  wget -q -O "./${db}-CSV.zip" "https://download.maxmind.com/app/geoip_download?edition_id=${db}-CSV&license_key=${LICENSE_KEY}&suffix=zip"
 done
 
 VERSION=$(ls | grep 'GeoLite2-Country_' | sed "s|GeoLite2-Country_||g" | tr -d '\n')
@@ -21,9 +20,9 @@ cp ./GeoLite2-ASN_*/GeoLite2-ASN.mmdb ./
 cp ./GeoLite2-ASN_*/GeoLite2-ASN.mmdb ./ASN.mmdb
 cp ./GeoLite2-City_*/GeoLite2-City.mmdb ./
 cp ./GeoLite2-City_*/GeoLite2-City.mmdb ./City.mmdb
-cp ./GeoLite2-*_*/*.csv ./
-
 rm -rf ./GeoLite2-*_*
+rm -rf ./GeoLite2-*.tar.gz
+
 echo $VERSION >version
 
 sed -i "s|## Sync Status|## Sync Status\n\n![](https://img.shields.io/badge/Version-$VERSION-2f8bff.svg)\n![](https://img.shields.io/badge/Last%20Sync-$DATE-blue.svg)|g" README.md
